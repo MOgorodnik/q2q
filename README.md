@@ -31,4 +31,4 @@ npm run dev
 ```sh
 npm run build
 ```
-# q2q
+# q2q-vue
