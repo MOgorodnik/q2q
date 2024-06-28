@@ -23,7 +23,7 @@ import CardFooterComponent from "./CardFooterComponent.vue";
         </card-footer-component>
       </div>
     </div>
-    <!-- <div class="col">
+    <div class="col">
       <div class="card h-100">
         <img src="https://picsum.photos/id/189/4608/2592" class="card-img-top" alt="...">
         <div class="card-body">
@@ -35,7 +35,7 @@ import CardFooterComponent from "./CardFooterComponent.vue";
           <small class="text-body-secondary">Last updated 3 mins ago</small>
         </div>
       </div>
-    </div> -->
+    </div>
 
   </div>
 </template>
