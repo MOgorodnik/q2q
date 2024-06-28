@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-  </header>
-
+  <h1>Hello App!</h1>
+  <p>
+    <strong>Current route path:</strong> {{ $route.fullPath }}
+  </p>
+  <nav>
+    <RouterLink to="/">Go to Home</RouterLink>
+    <RouterLink to="/about">Go to About</RouterLink>
+    <RouterLink to="/auth">Go to Auth</RouterLink>
+  </nav>
   <main>
-    <HelloWorld msg="Hoooooray!!!" />
-    <TheWelcome />
+    <RouterView />
   </main>
-</template>./components/TestMy.vue
+</template>
