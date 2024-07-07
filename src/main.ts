@@ -3,21 +3,16 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router'
 
-import HomeView from './views/Home.vue'
-import AboutView from './views/About.vue'
-import AuthView from './views/Authorithation.vue'
-
-const routes = [
-  { path: '/', component: HomeView },
-  { path: '/about', component: AboutView },
-  { path: '/auth', component: AuthView },
-]
+import routes from './router/index'
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  // history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
+  linkActiveClass: 'text-bg-info',
+  linkExactActiveClass: 'text-bg-success',
 })
 
 // createApp(App).mount('#app')
