@@ -8,21 +8,20 @@
   </div>
   <div v-else-if="!isProducts" class="row row-cols-1 row-cols-md-4 g-4">
     <div v-for="product in products" :key="product.id" class="col">
-      <!-- <RouterLink :to="`/products/${product.id}`"> -->
-        <RouterLink class="card h-100" :to="`/products/${product.id}`">
-          <div class="pt-3 px-3">
-            <img :src="product.image" :alt="product.title" style="height: 180px; mix-blend-mode:multiply;" class="card-img-top object-fit-contain">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ product.title }}</h5>
-            <p class="card-text"><strong>Price:</strong> ${{ product.price.toFixed(2) }}</p>
-            <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
-            <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
-            <p class="card-text"><strong>Rating:</strong> {{ product.rating.rate }} ({{ product.rating.count }} reviews)
-            </p>
-          </div>
-        </RouterLink>
-      <!-- </RouterLink> -->
+      <RouterLink class="card h-100" :to="`/products/${product.id}`">
+        <div class="pt-3 px-3">
+          <img :src="product.image" :alt="product.title" style="height: 180px; mix-blend-mode:multiply;"
+            class="card-img-top object-fit-contain">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text"><strong>Price:</strong> ${{ product.price.toFixed(2) }}</p>
+          <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+          <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
+          <p class="card-text"><strong>Rating:</strong> {{ product.rating.rate }} ({{ product.rating.count }} reviews)
+          </p>
+        </div>
+      </RouterLink>
     </div>
   </div>
   <div v-else>
