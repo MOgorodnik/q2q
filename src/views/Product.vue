@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineProps  } from "vue";
 import { useRoute } from 'vue-router';
 import axios from "axios";
 
@@ -41,6 +41,10 @@ interface Product {
   rating: Rating;
 }
 
+const props = defineProps<{
+  id: string
+}>();
+
 const route = useRoute();
 const productId = route.params.id as string;
 
@@ -49,9 +53,10 @@ const product = ref<Product | null>(null);
 const errorMsg = ref<string | null>(null);
 
 onMounted(async () => {
+  loading.value = true;
   try {
-    loading.value = true;
-    const res = await axios.get<Product>(`https://fakestoreapi.com/products/${productId}`);
+    // const res = await axios.get<Product>(`https://fakestoreapi.com/products/${productId}`);
+    const res = await axios.get<Product>(`https://fakestoreapi.com/products/${props.id}`);
     product.value = res.data;
   } catch (error: unknown) {
     errorMsg.value = 'Error! Could not reach the API. ' + (error instanceof Error ? error.message : String(error));
