@@ -20,9 +20,9 @@ onMounted(() => {
 
 <template>
 
-  <main>
+  <div class="container">
     <Loader v-if="productsStore.loading" />
 
     <products-items v-else />
-  </main>
+  </div>
 </template>

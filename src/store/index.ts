@@ -9,6 +9,12 @@ export interface Product {
   id: number;
   title: string;
   price: number;
+  thumbnail: string;
+  description: string;
+  rating: string;
+  stock: string;
+  brand: string;
+  category: string;
 }
 
 export const useProductStore = defineStore({
@@ -16,6 +22,7 @@ export const useProductStore = defineStore({
   state: () => ({
     products: [] as Product[], // Explicitly type the products array
     loading: true,
+    sortAscending: true,
   }),
   actions: {
     async getAllProducts() {
@@ -39,8 +46,9 @@ export const useProductStore = defineStore({
         (product) => product.id !== productId
       );
     },
-    sortProducts(): void {
-      this.products = this.products.sort((a, b) => a.price - b.price);
+    setSortOrder(ascending: boolean): void {
+      // New action to set sort order
+      this.sortAscending = ascending;
     },
   },
 });
