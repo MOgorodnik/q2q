@@ -11,8 +11,8 @@ export interface Product {
   price: number;
   thumbnail: string;
   description: string;
-  rating: string;
-  stock: string;
+  rating: number;
+  stock: number;
   brand: string;
   category: string;
 }
@@ -20,7 +20,7 @@ export interface Product {
 export const useProductStore = defineStore({
   id: 'products',
   state: () => ({
-    products: [] as Product[], // Explicitly type the products array
+    products: [] as Product[],
     loading: true,
     sortAscending: true,
   }),
@@ -39,7 +39,7 @@ export const useProductStore = defineStore({
       }
     },
     addProduct(product: Product): void {
-      this.products.push(product); // Remove the type annotation here
+      this.products.push(product);
     },
     removeProduct(productId: number): void {
       this.products = this.products.filter(
@@ -47,7 +47,6 @@ export const useProductStore = defineStore({
       );
     },
     setSortOrder(ascending: boolean): void {
-      // New action to set sort order
       this.sortAscending = ascending;
     },
   },

@@ -7,12 +7,6 @@ import Loader from './components/Loader.vue';
 
 const productsStore = useProductStore()
 
-// const addProduct = (product: Product) => productsStore.addProduct(product);
-
-// const removeProduct = (productId) => productsStore.removeProduct(productId);
-
-// const sortProducts = () => productsStore.sortProducts()
-
 onMounted(() => {
   productsStore.getAllProducts()
 })

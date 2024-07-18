@@ -3,6 +3,9 @@
 import { useProductStore } from "@/store";
 import { computed } from "vue";
 import ProductItem from './ProductItem.vue';
+import AddProductForm from "./AddProductForm.vue";
+
+import type { Product } from '@/store';
 
 const productsStore = useProductStore();
 
@@ -19,11 +22,18 @@ const toggleSort = () => {
 const removeProduct = (productId: number) => {
   productsStore.removeProduct(productId);
 };
+
+const handleAddedProduct = (newProduct: Product) => {
+  productsStore.addProduct(newProduct);
+};
 </script>
 
 <template>
   <div>
-    <h2>Products list</h2>
+    <h2>Products list </h2>
+
+    <AddProductForm  @added-product="handleAddedProduct" />
+
     <button @click="toggleSort" class="btn btn-primary mb-3">
       Sort by Price ({{ productsStore.sortAscending ? 'Ascending' : 'Descending' }})
     </button>
