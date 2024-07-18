@@ -1,15 +1,28 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue';
+import { onMounted } from 'vue';
+import { useProductStore } from "@/store";
+
+import ProductsItems from './components/ProductsItems.vue';
+import Loader from './components/Loader.vue';
+
+const productsStore = useProductStore()
+
+// const addProduct = (product: Product) => productsStore.addProduct(product);
+
+// const removeProduct = (productId) => productsStore.removeProduct(productId);
+
+// const sortProducts = () => productsStore.sortProducts()
+
+onMounted(() => {
+  productsStore.getAllProducts()
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-  </header>
 
   <main>
-    <HelloWorld msg="Hoooooray!!!" />
-    <TheWelcome />
+    <Loader v-if="productsStore.loading" />
+
+    <products-items v-else />
   </main>
-</template>./components/TestMy.vue
+</template>
