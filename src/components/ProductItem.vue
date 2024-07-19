@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import type { Product } from '@/store';
 
 interface Props {
@@ -14,12 +15,39 @@ const emit = defineEmits<{
 const removeProduct = () => {
   emit('remove', props.product.id);
 };
+
+const handleImageError = (e: Event) => {
+  const target = e.target as HTMLImageElement;
+  target.src = 'https://picsum.photos/id/239/200/300';
+};
+
+const imageLoading = ref(true);
+
+const handleImageLoad = () => {
+  imageLoading.value = false;
+};
 </script>
 
 <template>
   <div class="col">
     <div class="card h-100">
-      <img :src="product.thumbnail" class="card-img-top" :alt="product.title">
+      <div class="ratio ratio-4x3">
+        <div v-if="imageLoading" class="d-flex justify-content-center align-items-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <!-- <img :src="product.images[0]" class="card-img-top object-fit-contain" :alt="product.title" @error="handleImageError"> -->
+        <img 
+          :src="product.images[0]" 
+          class="card-img-top object-fit-contain" 
+          :alt="product.title" 
+          @error="handleImageError"
+          @load="handleImageLoad"
+          :class="{ 'd-none': imageLoading }"
+        >
+      </div>
+      <!-- <img :src="product.thumbnail" class="card-img-top" :alt="product.title" @error="handleImageError"> -->
       <div class="card-body">
         <h5 class="card-title">{{ product.id }} - {{ product.title }}</h5>
         <p class="card-text">{{ product.description }}</p>
