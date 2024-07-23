@@ -6,6 +6,8 @@ const emit = defineEmits<{
   (e: 'added-product', product: Product): void;
 }>();
 
+const randomId = [237, 238, 239, 240]
+
 const newProduct = ref<Product>({
   id: 0, // This will be set by the server or store
   title: 'Init title',
@@ -16,7 +18,7 @@ const newProduct = ref<Product>({
   category: 'laptop',
   brand: 'Apple',
   thumbnail: '',
-  images: ['https://picsum.photos/200/300?random=1'],
+  images: ['https://picsum.photos/id/230/200/300'],
 });
 
 const validateProduct = (product: Product): boolean => {
@@ -49,7 +51,7 @@ const onAddProductFormSubmit = () => {
       category: 'battery',
       brand: 'OM',
       thumbnail: '',
-      images: ['https://picsum.photos/200/300?random=1']
+      images: [`https://picsum.photos/id/${randomId[Math.floor(Math.random()*randomId.length)]}/200/300`]
     };
   }
 };

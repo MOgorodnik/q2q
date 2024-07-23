@@ -16,13 +16,6 @@ const toggleSort = () => {
   productsStore.setSortOrder(!productsStore.sortAscending);
 };
 
-// const removeProduct = (productId: number) => {
-//   productsStore.removeProduct(productId);
-// };
-
-// const handleAddedProduct = (newProduct: Product) => {
-//   productsStore.addProduct(newProduct);
-// };
 const removeProduct = async (productId: number) => {
   try {
     await productsStore.removeProduct(productId);
