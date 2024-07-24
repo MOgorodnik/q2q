@@ -1,15 +1,46 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue';
+<script setup>
+import { computed, onMounted, ref } from "vue";
+
+import { getAllPhotos, getSlicePhotos } from "@/api/libs/axios/fetchData.js";
+
+import Loader from './components/Loader.vue'
+
+let loading = ref(false);
+let error = ref(false);
+let currentPage = ref(1);
+let perPage = ref(15);
+let photosCount = ref({});
+let sliceOfPhotos = ref({});
+
+const changePagehandler = page => {
+  currentPage.value = page;
+}
+
+const pageCount = computed(() => Math.ceil(photosCount.value / perPage.value));
+
+onMounted(async () => {
+  loading.value = true;
+  try {
+    photosCount.value = (await getAllPhotos()).length;
+
+    sliceOfPhotos.value = await getSlicePhotos(currentPage.value, perPage.value);
+    
+    console.log(photosCount.value, sliceOfPhotos.value);
+  } catch (err) {
+    console.error('Failed to fetch products:', err);
+    error.value = 'Failed to load products. Please try again later.'
+  }
+  finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-  </header>
-
-  <main>
-    <HelloWorld msg="Hoooooray!!!" />
-    <TheWelcome />
-  </main>
-</template>./components/TestMy.vue
+  <Loader v-if="loading" />
+  <div v-else>
+    <main>
+      main
+    </main>
+  </div>
+</template>

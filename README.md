@@ -31,4 +31,14 @@ npm run dev
 ```sh
 npm run build
 ```
-# q2q-vue
+
+## Dummy Data
+
+https://fakestoreapi.com/docs
+
+https://dummyjson.com/docs
+
+
+## NPM trends
+
+https://npmtrends.com/axios-vs-got-vs-node-fetch-vs-request-vs-superagent
