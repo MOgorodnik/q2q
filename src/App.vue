@@ -1,46 +1,28 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { ref, computed } from "vue";
+import GalleryAxios from "./components/GalleryAxios.vue";
+import GalleryFetch from "./components/GalleryFetch.vue";
+import Paging from "@/components/Paging.vue";
 
-import { getAllPhotos, getSlicePhotos } from "@/api/libs/axios/fetchData.js";
+const currentPage = ref(1);
+const perPage = ref(15);
+const photosCount = ref(0);
 
-import Loader from './components/Loader.vue'
-
-let loading = ref(false);
-let error = ref(false);
-let currentPage = ref(1);
-let perPage = ref(15);
-let photosCount = ref({});
-let sliceOfPhotos = ref({});
-
-const changePagehandler = page => {
+const changePageHandler = (page) => {
   currentPage.value = page;
 }
 
-const pageCount = computed(() => Math.ceil(photosCount.value / perPage.value));
-
-onMounted(async () => {
-  loading.value = true;
-  try {
-    photosCount.value = (await getAllPhotos()).length;
-
-    sliceOfPhotos.value = await getSlicePhotos(currentPage.value, perPage.value);
-    
-    console.log(photosCount.value, sliceOfPhotos.value);
-  } catch (err) {
-    console.error('Failed to fetch products:', err);
-    error.value = 'Failed to load products. Please try again later.'
-  }
-  finally {
-    loading.value = false;
-  }
+const pageCount = computed(() => {
+  return Math.ceil(photosCount.value / perPage.value);
 });
+
+const updatePhotosCount = (count) => {
+  photosCount.value = count;
+}
 </script>
 
 <template>
-  <Loader v-if="loading" />
-  <div v-else>
-    <main>
-      main
-    </main>
-  </div>
+  <GalleryFetch :limit="perPage" :page="currentPage" @update-total="updatePhotosCount" />
+  <!-- <GalleryAxios :limit="perPage" :page="currentPage" @update-total="updatePhotosCount" /> -->
+  <Paging :on-change-page="changePageHandler" :current-page="currentPage" :page-count="pageCount" />
 </template>
