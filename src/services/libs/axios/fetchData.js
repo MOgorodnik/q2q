@@ -1,21 +1,68 @@
+// src/services/api/photoService.js
+
 import axios from 'axios';
 
-const BASE_URL = 'https://jsonplaceholder.typicode.com';
-const PHOTOS_URL = `${BASE_URL}/photos`;
+const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
+const PHOTOS_ENDPOINT = `${API_BASE_URL}/photos`;
 
-const getTargetedPhotos = async (page, limit) => {
-  const response = await axios.get(PHOTOS_URL, {
-    params: {
-      _page: page,
-      _limit: limit
+const photoApiClient = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+const fetchPhotos = async (pageNumber, photosPerPage, includeTotalCount = true) => {
+  try {
+    const response = await photoApiClient.get(PHOTOS_ENDPOINT, {
+      params: {
+        _page: pageNumber,
+        _limit: photosPerPage,
+      },
+    });
+
+    const photos = response.data;
+    let totalCount = 0;
+
+    if (includeTotalCount) {
+      totalCount = parseInt(response.headers['x-total-count'] || '0', 10);
     }
-  });
-  return {
-    data: response.data,
-    total: parseInt(response.headers['x-total-count'] || '0', 10)
-  };
+
+    return { photos, totalCount };
+  } catch (error) {
+    console.error('Error fetching photos:', error);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      throw new Error(`Failed to fetch photos. Server responded with status: ${error.response.status}`);
+    } else if (error.request) {
+      // The request was made but no response was received
+      throw new Error('Failed to fetch photos. No response received from server.');
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      throw new Error('Failed to fetch photos. Please try again later.');
+    }
+  }
 };
 
 export {
-  getTargetedPhotos
+  fetchPhotos
 };
+// import axios from 'axios';
+
+// const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
+// const PHOTOS_ENDPOINT = `${API_BASE_URL}/photos`;
+
+// const getTargetedPhotos = async (page, limit) => {
+//   const response = await axios.get(PHOTOS_ENDPOINT, {
+//     params: {
+//       _page: page,
+//       _limit: limit
+//     }
+//   });
+//   return {
+//     data: response.data,
+//     total: parseInt(response.headers['x-total-count'] || '0', 10)
+//   };
+// };
+
+// export {
+//   getTargetedPhotos
+// };

@@ -1,6 +1,7 @@
 <!-- src\App.vue -->
 <script setup>
 import { ref, computed } from 'vue';
+import GalleryAxios from './components/GalleryAxios.vue';
 import GalleryFetch from './components/GalleryFetch.vue';
 import Paging from '@/components/Paging.vue';
 
@@ -28,19 +29,20 @@ const setGalleryLoadingState = (isLoading) => {
 </script>
 
 <template>
-  <GalleryFetch
+  <!-- <GalleryFetch
+    :photos-per-page="photosPerPage"
+    :page-number="currentPageNumber"
+    @update-total-count="updateTotalPhotosCount"
+    @loading-state-change="setGalleryLoadingState"
+    @loading-error="hasLoadingError = true"
+  /> -->
+  <GalleryAxios
     :photos-per-page="photosPerPage"
     :page-number="currentPageNumber"
     @update-total-count="updateTotalPhotosCount"
     @loading-state-change="setGalleryLoadingState"
     @loading-error="hasLoadingError = true"
   />
-  <!-- <GalleryAxios
-    :limit="perPage"
-    :page="currentPage"
-    @update-total="updatePhotosCount"
-    @error="hasError = true"
-  /> -->
   <Paging
     v-if="!isGalleryLoading"
     :on-page-change="handlePageChange"

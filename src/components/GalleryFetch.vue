@@ -29,6 +29,7 @@ const loadPhotosForPage = async () => {
       props.photosPerPage,
       !isTotalCountFetched.value
     );
+
     displayedPhotos.value = photos;
 
     if (!isTotalCountFetched.value) {
