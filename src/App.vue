@@ -1,28 +1,51 @@
+<!-- src\App.vue -->
 <script setup>
-import { ref, computed } from "vue";
-import GalleryAxios from "./components/GalleryAxios.vue";
-import GalleryFetch from "./components/GalleryFetch.vue";
-import Paging from "@/components/Paging.vue";
+import { ref, computed } from 'vue';
+import GalleryFetch from './components/GalleryFetch.vue';
+import Paging from '@/components/Paging.vue';
 
-const currentPage = ref(1);
-const perPage = ref(15);
-const photosCount = ref(0);
+const currentPageNumber = ref(1);
+const photosPerPage = ref(15);
+const totalPhotosCount = ref(0);
+const hasLoadingError = ref(false);
+const isGalleryLoading = ref(false);
 
-const changePageHandler = (page) => {
-  currentPage.value = page;
-}
+const totalPageCount = computed(() =>
+  Math.ceil(totalPhotosCount.value / photosPerPage.value)
+);
 
-const pageCount = computed(() => {
-  return Math.ceil(photosCount.value / perPage.value);
-});
+const handlePageChange = (newPage) => {
+  currentPageNumber.value = newPage;
+};
 
-const updatePhotosCount = (count) => {
-  photosCount.value = count;
-}
+const updateTotalPhotosCount = (count) => {
+  totalPhotosCount.value = count;
+};
+
+const setGalleryLoadingState = (isLoading) => {
+  isGalleryLoading.value = isLoading;
+};
 </script>
 
 <template>
-  <GalleryFetch :limit="perPage" :page="currentPage" @update-total="updatePhotosCount" />
-  <!-- <GalleryAxios :limit="perPage" :page="currentPage" @update-total="updatePhotosCount" /> -->
-  <Paging :on-change-page="changePageHandler" :current-page="currentPage" :page-count="pageCount" />
+  <GalleryFetch
+    :photos-per-page="photosPerPage"
+    :page-number="currentPageNumber"
+    @update-total-count="updateTotalPhotosCount"
+    @loading-state-change="setGalleryLoadingState"
+    @loading-error="hasLoadingError = true"
+  />
+  <!-- <GalleryAxios
+    :limit="perPage"
+    :page="currentPage"
+    @update-total="updatePhotosCount"
+    @error="hasError = true"
+  /> -->
+  <Paging
+    v-if="!isGalleryLoading"
+    :on-page-change="handlePageChange"
+    :current-page="currentPageNumber"
+    :total-pages="totalPageCount"
+    :has-error="hasLoadingError"
+  />
 </template>

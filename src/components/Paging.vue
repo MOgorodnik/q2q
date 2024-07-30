@@ -1,70 +1,103 @@
+<!-- src\components\Paging.vue -->
 <script setup>
-import { computed, watch } from "vue";
+import { computed, watch } from 'vue';
 
 const props = defineProps({
-  onChangePage: { type: Function, required: true },
+  onPageChange: { type: Function, required: true },
   currentPage: { type: Number, required: true },
-  pageCount: { type: Number, required: true }
+  totalPages: { type: Number, required: true },
+  hasError: { type: Boolean, required: false, default: false },
 });
 
 const visiblePageNumbers = computed(() => {
-  const res = [];
-  let startPage = Math.max(props.currentPage - 5, 1);
-  let endPage = Math.min(startPage + 5, props.pageCount);
-  if (endPage - startPage < 5) {
-    startPage = Math.max(endPage - 5, 1);
+  const pageNumbers = [];
+  let startPage = Math.max(props.currentPage - 2, 1);
+  let endPage = Math.min(startPage + 4, props.totalPages);
+  if (endPage - startPage < 4) {
+    startPage = Math.max(endPage - 4, 1);
   }
   for (let i = startPage; i <= endPage; i++) {
-    res.push(i);
+    pageNumbers.push(i);
   }
-  return res;
+  return pageNumbers;
 });
 
-const showFirstEllipsis = computed(() => visiblePageNumbers.value[0] > 1);
-const showLastEllipsis = computed(() => visiblePageNumbers.value[visiblePageNumbers.value.length - 1] < props.pageCount);
+const shouldShowFirstEllipsis = computed(() => visiblePageNumbers.value[0] > 1);
+const shouldShowLastEllipsis = computed(
+  () =>
+    visiblePageNumbers.value[visiblePageNumbers.value.length - 1] <
+    props.totalPages
+);
 
-const changePageHandler = (pageNumber) => {
-  if (pageNumber >= 1 && pageNumber <= props.pageCount) {
-    props.onChangePage(pageNumber);
+const navigateToPage = (pageNumber) => {
+  if (pageNumber >= 1 && pageNumber <= props.totalPages) {
+    props.onPageChange(pageNumber);
   }
 };
 
-watch(() => props.currentPage, (newPage) => {
-  if (!visiblePageNumbers.value.includes(newPage)) {
-    changePageHandler(newPage);
+watch(
+  () => props.currentPage,
+  (newPage) => {
+    if (!visiblePageNumbers.value.includes(newPage)) {
+      navigateToPage(newPage);
+    }
   }
-});
+);
 </script>
 
 <template>
-  <nav aria-label="Page navigation">
+  <nav aria-label="Page navigation" v-if="!hasError">
     <ul class="pagination justify-content-center">
       <li class="page-item" :class="{ disabled: props.currentPage === 1 }">
-        <button class="page-link" @click="changePageHandler(props.currentPage - 1)" :disabled="props.currentPage === 1">Prev</button>
+        <button
+          class="page-link"
+          @click="navigateToPage(props.currentPage - 1)"
+          :disabled="props.currentPage === 1"
+        >
+          Previous
+        </button>
       </li>
 
-      <template v-if="showFirstEllipsis">
+      <template v-if="shouldShowFirstEllipsis">
         <li class="page-item">
-          <button class="page-link" @click="changePageHandler(1)">1</button>
+          <button class="page-link" @click="navigateToPage(1)">1</button>
         </li>
         <li class="page-item">
           <span class="page-link">...</span>
         </li>
       </template>
 
-      <li class="page-item" :class="{ active: props.currentPage === pageNumber }" v-for="pageNumber in visiblePageNumbers" :key="pageNumber">
-        <button class="page-link" @click="changePageHandler(pageNumber)">{{ pageNumber }}</button>
+      <li
+        class="page-item"
+        :class="{ active: props.currentPage === pageNumber }"
+        v-for="pageNumber in visiblePageNumbers"
+        :key="pageNumber"
+      >
+        <button class="page-link" @click="navigateToPage(pageNumber)">
+          {{ pageNumber }}
+        </button>
       </li>
 
-      <template v-if="showLastEllipsis">
+      <template v-if="shouldShowLastEllipsis">
         <li class="page-item"><span class="page-link">...</span></li>
         <li class="page-item">
-          <button class="page-link" @click="changePageHandler(props.pageCount)">{{ props.pageCount }}</button>
+          <button class="page-link" @click="navigateToPage(props.totalPages)">
+            {{ props.totalPages }}
+          </button>
         </li>
       </template>
 
-      <li class="page-item" :class="{ disabled: props.currentPage === props.pageCount }">
-        <button class="page-link" @click="changePageHandler(props.currentPage + 1)" :disabled="props.currentPage === props.pageCount">Next</button>
+      <li
+        class="page-item"
+        :class="{ disabled: props.currentPage === props.totalPages }"
+      >
+        <button
+          class="page-link"
+          @click="navigateToPage(props.currentPage + 1)"
+          :disabled="props.currentPage === props.totalPages"
+        >
+          Next
+        </button>
       </li>
     </ul>
   </nav>

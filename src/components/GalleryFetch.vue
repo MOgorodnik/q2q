@@ -1,40 +1,61 @@
+<!-- src\components\GalleryFetch.vue -->
 <script setup>
-import { ref, watchEffect, onMounted, watch, nextTick } from "vue";
-import { fetchTargetedPhotos } from "@/services/libs/fetch/fetchData.js";
-import Loader from "@/components/Loader.vue";
+import { ref, watch, nextTick } from 'vue';
+import { fetchPhotos } from '@/services/libs/fetch/photoService.js';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const props = defineProps({
-  limit: { type: Number, required: true },
-  page: { type: Number, required: true }
+  photosPerPage: { type: Number, required: true },
+  pageNumber: { type: Number, required: true },
 });
 
-const emit = defineEmits(['updateTotal']);
+const emit = defineEmits([
+  'updateTotalCount',
+  'loadingStateChange',
+  'loadingError',
+]);
 
-const targetedPhotos = ref([]);
-const loading = ref(false);
-const error = ref(null);
-const totalFetched = ref(false);
+const displayedPhotos = ref([]);
+const isLoading = ref(false);
+const errorMessage = ref(null);
+const isTotalCountFetched = ref(false);
 
-const loadPhotos = async () => {
-  loading.value = true;
+const loadPhotosForPage = async () => {
+  isLoading.value = true;
+  emit('loadingStateChange', true);
   try {
-    const { data, total } = await fetchTargetedPhotos(props.page, props.limit, !totalFetched.value);
-    targetedPhotos.value = data;
+    const { photos, totalCount } = await fetchPhotos(
+      props.pageNumber,
+      props.photosPerPage,
+      !isTotalCountFetched.value
+    );
+    displayedPhotos.value = photos;
 
-    if (!totalFetched.value) {
-      emit('updateTotal', total);
-      totalFetched.value = true;
+    if (!isTotalCountFetched.value) {
+      emit('updateTotalCount', totalCount);
+      isTotalCountFetched.value = true;
     }
   } catch (err) {
-    console.error('Failed to fetch targeted photos:', err);
-    error.value = 'Failed to load photos. Please try again later.';
+    console.error('Failed to fetch photos:', err);
+    errorMessage.value = err.message;
+    emit('loadingError', err);
   } finally {
-    loading.value = false;
+    isLoading.value = false;
+    emit('loadingStateChange', false);
   }
 };
 
 // One request
-/*
+// v 1
+watch(
+  () => [props.pageNumber, props.photosPerPage],
+  () => {
+    nextTick(loadPhotosForPage);
+  },
+  { immediate: true }
+);
+// v 2
+/**
 onMounted(() => {
   loadPhotos();
 });
@@ -43,38 +64,33 @@ watch(
   () => [props.page, props.limit],
   loadPhotos
 );
-*/
-
-watch(
-  () => [props.page, props.limit],
-  () => {
-    nextTick(() => {
-      loadPhotos();
-    });
-  },
-  { immediate: true }
-);
+/**/
 
 // Double request
 // watchEffect(() => {
 //   loadPhotos();
 // }, { flush: 'post' });
-  
+
 // Double request
 // watchEffect(loadPhotos);
 </script>
 
 <template>
-  <Loader v-if="loading" />
-  <div v-else-if="error">{{ error }}</div>
+  <LoadingSpinner v-if="isLoading" />
+  <div v-else-if="errorMessage" class="alert alert-warning text-center">
+    {{ errorMessage }}
+  </div>
   <div v-else class="mb-5">
-    <h1>The gallery uses the service with native fetch JS</h1>
-
+    <h1>Photo Gallery</h1>
     <div class="row row-cols-2 row-cols-md-6 g-4">
-      <div class="col" v-for="photo in targetedPhotos" :key="photo.id">
+      <div class="col" v-for="photo in displayedPhotos" :key="photo.id">
         <div class="card h-100">
-          <img :src="`https://picsum.photos/100?random=${photo.id}`" :alt="photo.title" class="card-img-top">
-          <div class="card-body overflow-y-auto" style="max-height: 100px;">
+          <img
+            :src="`https://picsum.photos/100?random=${photo.id}`"
+            :alt="photo.title"
+            class="card-img-top"
+          />
+          <div class="card-body overflow-y-auto" style="max-height: 100px">
             <p class="card-text">{{ photo.title }}</p>
           </div>
         </div>
@@ -82,5 +98,3 @@ watch(
     </div>
   </div>
 </template>
-
-<style scoped></style>
