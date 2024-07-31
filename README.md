@@ -1,4 +1,4 @@
-# vue-itvdn-start
+# q2q-vue
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -31,4 +31,94 @@ npm run dev
 ```sh
 npm run build
 ```
-# q2q-vue
+# App folders structure (start example)
+```
+src/
+|-- assets/
+|   |-- images/
+|   |-- styles/
+|       |-- main.scss
+|
+|-- components/
+|   |-- common/
+|   |   |-- AppButton.vue
+|   |   |-- AppLoader.vue
+|   |
+|   |-- layout/
+|   |   |-- TheHeader.vue
+|   |   |-- TheFooter.vue
+|   |
+|   |-- gallery/
+|       |-- GalleryItem.vue
+|       |-- GalleryList.vue
+|
+|-- composables/
+|   |-- useApi.js
+|   |-- usePhotoFilters.js
+|
+|-- router/
+|   |-- index.js
+|
+|-- stores/
+|   |-- photo.js
+|   |-- user.js
+|
+|-- views/
+|   |-- HomeView.vue
+|   |-- GalleryView.vue
+|   |-- PhotoDetailView.vue
+|
+|-- services/
+|   |-- api.js
+|   |-- photoService.js
+|
+|-- utils/
+|   |-- helpers.js
+|   |-- constants.js
+|
+|-- locales/
+|   |-- en.json
+|   |-- uk.json
+|
+|-- plugins/
+|   |-- i18n.js
+|
+|-- App.vue
+|-- main.js
+
+public/
+|-- index.html
+|-- favicon.ico
+
+tests/
+|-- unit/
+|-- e2e/
+
+.env
+.env.production
+.gitignore
+package.json
+vite.config.js
+tailwind.config.js
+```
+## Explanation of the structure:
+
+`assets/`: Contains static resources such as images and styles.  
+`components/`:  
+- `common/`: Common components that are used throughout the application.
+- `layout/`: Components that form the basic structure of the application.
+- `gallery/`: Specific components for the gallery.
+
+`composables/`: Contains logic that can be reused in different components.  
+`router/`: Configuration Vue Router.  
+`stores/`: Pinia stores to manage the state of the application.  
+`views/`: Components that correspond to different pages or routes.  
+`services/`: Contains logic for working with APIs and other services.  
+`utils/`: Auxiliary functions and constants.  
+`locales/`: Files for internationalization (i18n).  
+`plugins/`: Configurations for plugins Vue.  
+`App.vue`: The root component of the application.  
+`main.js`: Entry point to the application.  
+`public/`: Static files that do not require processing.  
+`tests/`: Directory for tests.  
+Configuration files: `.env, .gitignore, package.json, vite.config.js, tailwind.config.js`.
