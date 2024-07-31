@@ -1,5 +1,14 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { getWeatherData } from "@/services/api";
+
 import HelloWorld from './components/HelloWorld.vue'
+
+onMounted(()=>{
+  console.log('onMounted App.vue');
+  
+  getWeatherData('kyiv')
+})
 </script>
 
 <template>
@@ -10,4 +19,4 @@ import HelloWorld from './components/HelloWorld.vue'
   <main>
     <HelloWorld msg="Hoooooray!!!" />
   </main>
-</template>./components/TestMy.vue
+</template>
