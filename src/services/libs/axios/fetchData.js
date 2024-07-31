@@ -1,9 +1,7 @@
 // src/services/api/photoService.js
 
 import axios from 'axios';
-
-const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
-const PHOTOS_ENDPOINT = `${API_BASE_URL}/photos`;
+import { API_BASE_URL, ENDPOINTS } from "@/services/api";
 
 const photoApiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +9,7 @@ const photoApiClient = axios.create({
 
 const fetchPhotos = async (pageNumber, photosPerPage, includeTotalCount = true) => {
   try {
-    const response = await photoApiClient.get(PHOTOS_ENDPOINT, {
+    const response = await photoApiClient.get(ENDPOINTS.PHOTOS, {
       params: {
         _page: pageNumber,
         _limit: photosPerPage,
@@ -45,24 +43,3 @@ const fetchPhotos = async (pageNumber, photosPerPage, includeTotalCount = true) 
 export {
   fetchPhotos
 };
-// import axios from 'axios';
-
-// const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
-// const PHOTOS_ENDPOINT = `${API_BASE_URL}/photos`;
-
-// const getTargetedPhotos = async (page, limit) => {
-//   const response = await axios.get(PHOTOS_ENDPOINT, {
-//     params: {
-//       _page: page,
-//       _limit: limit
-//     }
-//   });
-//   return {
-//     data: response.data,
-//     total: parseInt(response.headers['x-total-count'] || '0', 10)
-//   };
-// };
-
-// export {
-//   getTargetedPhotos
-// };

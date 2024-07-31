@@ -1,8 +1,8 @@
 <!-- src\App.vue -->
 <script setup>
 import { ref, computed } from 'vue';
-import GalleryAxios from './components/GalleryAxios.vue';
-import GalleryFetch from './components/GalleryFetch.vue';
+import GalleryAxios from '@/components/GalleryAxios.vue';
+import GalleryFetch from '@/components/GalleryFetch.vue';
 import Paging from '@/components/Paging.vue';
 
 const currentPageNumber = ref(1);
