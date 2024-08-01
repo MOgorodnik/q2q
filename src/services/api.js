@@ -6,12 +6,11 @@ const weatherAppInstance = axios.create({
 })
 
 const getWeatherData = (city) => {
-  console.log(city, import.meta.env.VITE_API_KEY_OWM);
-  // return weatherAppInstance.get(ENDPOINT.WEATHER, {
-  return axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+  console.log('api.js - ', city, import.meta.env.VITE_API_KEY_OWM);
+  return weatherAppInstance.get(ENDPOINT.WEATHER, {
     params: {
       q: city,
-      appid: '4ac60215c6d8eb479641a739af08312d' || import.meta.env.VITE_API_KEY_OWM,
+      appid: import.meta.env.VITE_API_KEY_OWM,
       units: 'metric'
     },
   })
