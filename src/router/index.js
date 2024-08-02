@@ -1,11 +1,17 @@
-import routes from './routes';
-
 import { createWebHistory, createRouter } from 'vue-router';
 
-export default createRouter({
-  // history: createMemoryHistory(),
+import routes from './routes';
+
+const router = createRouter({
   history: createWebHistory(),
   routes,
   linkActiveClass: 'text-bg-info',
   linkExactActiveClass: 'text-bg-success',
-})
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || 'Weather App';
+  next();
+});
+
+export default router;

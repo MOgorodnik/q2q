@@ -1,5 +1,7 @@
 <script setup>
+import Weather from '@/components/Weather.vue';
+
 </script>
 <template>
-  <div>Home page</div>
+  <Weather />
 </template>
