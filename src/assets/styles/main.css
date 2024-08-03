@@ -1,0 +1,24 @@
+@import './base.css';
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+.nav-link {
+  border-radius: 10px;
+  border: 2px solid #8a2be2;
+  color: #8a2be2;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 5px;
+}
+
+.nav-link:hover {
+  background-color: rgba(138, 43, 226, 0.2);
+}
+
+.nav-link-active,
+.nav-link-exact-active {
+  background-color: #8a2be2;
+  color: white;
+}

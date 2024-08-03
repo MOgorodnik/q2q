@@ -1,18 +1,16 @@
 <script setup>
-import navPages from "@/router/routes.js";
+import { computed } from 'vue';
+import pages from '@/router/routes.js';
 
+const navPages = computed(() =>
+  pages.filter((page) => !['/404', '/:pathMatch(.*)*'].includes(page.path))
+);
 </script>
 
 <template>
   <nav class="navbar navbar-expand-sm bg-body-tertiary">
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="100"
-      height="100"
-    />
-    <div class="container-fluid">
+    <div class="container">
+      <span class="navbar-brand" href="#">Weather App</span>
       <button
         class="navbar-toggler"
         type="button"
@@ -26,8 +24,8 @@ import navPages from "@/router/routes.js";
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <ul class="navbar-nav">
-          <li class="nav-item" v-for="page in navPages" :key="page.path">
-            <RouterLink class="nav-link" :to="page.path">{{
+          <li class="nav-item mt-2 mt-sm-auto" v-for="page in navPages" :key="page.path">
+            <RouterLink class="nav-link px-3" :to="page.path">{{
               page.title
             }}</RouterLink>
           </li>

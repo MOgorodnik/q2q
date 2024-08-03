@@ -5,8 +5,8 @@ import routes from './routes';
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  linkActiveClass: 'text-bg-info',
-  linkExactActiveClass: 'text-bg-success',
+  linkActiveClass: 'nav-link-active',
+  // linkExactActiveClass: 'text-bg-success',
 });
 
 router.beforeEach((to, from, next) => {
